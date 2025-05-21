@@ -66,3 +66,12 @@ export const select1 = async function (choices) {
         ])
         
 }
+
+export const projectPath = async function() {
+    return inquirer.prompt({
+        type: 'input',
+        name: 'pp',
+        message: 'Where do you want to create your project?',
+        default: process.cwd(),
+    })
+}

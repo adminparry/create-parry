@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { select1 } from './constants.mjs'
+import { select1, projectPath } from './constants.mjs'
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const log = console.log;
@@ -17,10 +17,13 @@ async function main() {
             value: item
         }
     });
+    const { pp } = await projectPath();
     const { toppings } = await select1(choices);
 
+    const pwd = path.resolve(process.cwd(), pp);
+
     toppings.forEach(item => {
-        copy(path.resolve(__dirname, item), path.resolve(process.cwd(), item.replace('template', 'project')))
+        copy(path.resolve(__dirname, item), path.resolve(pwd, item.replace('template', 'project')))
     })
 
     
