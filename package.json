@@ -1,0 +1,23 @@
+{
+  "name": "create-parry",
+  "version": "1.0.0",
+  "main": "index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adminparry/create-parry.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adminparry/create-parry/issues"
+  },
+  "homepage": "https://github.com/adminparry/create-parry#readme",
+  "description": "",
+  "dependencies": {
+    "inquirer": "^12.6.1"
+  }
+}
