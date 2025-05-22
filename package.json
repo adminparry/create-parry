@@ -1,7 +1,11 @@
 {
   "name": "create-parry",
-  "version": "1.0.0",
-  "main": "index.mjs",
+  "version": "1.0.11",
+  "type": "module",
+  "bin":{
+    "create-parry": "index.js",
+    "cp": "index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -9,8 +13,11 @@
     "type": "git",
     "url": "git+https://github.com/adminparry/create-parry.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "initializr",
+    "generator"
+  ],
+  "author": "parry",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/adminparry/create-parry/issues"
