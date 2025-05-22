@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: service-provider
+          uri: lb://service-provider
+          predicates:
+            - Path=/api/**
+  config:
+    import: optional:configserver:http://localhost:8888
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
