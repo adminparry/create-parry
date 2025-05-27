@@ -1,0 +1,7 @@
+# 在server.properties中添加
+listeners=SSL://:9093
+ssl.keystore.location=/path/to/kafka.server.keystore.jks
+ssl.keystore.password=keystore_password
+ssl.key.password=key_password
+ssl.truststore.location=/path/to/kafka.server.truststore.jks
+ssl.truststore.password=truststore_password

@@ -1,0 +1,3 @@
+rename-command FLUSHDB ""
+rename-command FLUSHALL ""
+rename-command CONFIG ""
