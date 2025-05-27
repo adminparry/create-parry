@@ -1,0 +1,35 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: my-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  datasource:
+    url: ENC(ZCqUOPrSLwTL9Aptjjl5/rzFVZ5BDJSD2+5to8aAZnr2UphLawMmE5QkPwXcolgq+mGBLntY9Yksfyxw1TDFlA==)
+    username: ENC(2dwq/1A3Izar5AxsXgp+uRKmyBN4NWkK)
+    password: ENC(dJT0HkQvDEYOFPbdvlxo3Epaat/czOph)
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      max-lifetime: 1800000  # 连接最大寿命 30min
+      connection-timeout: 1800000  # 连接超时时间 30min
+      minimum-idle: 100   # 最小空闲连接数
+      maximum-pool-size: 200  # 最大连接池大小
+      connection-test-query: "select 1"
+      idle-timeout: 600000 # 空闲连接超时时长 10min
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format-sql: true
+jasypt:
+  encryptor:
+    password: your_grace
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.RandomIvGenerator
