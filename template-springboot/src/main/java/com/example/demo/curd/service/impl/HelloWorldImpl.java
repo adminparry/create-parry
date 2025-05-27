@@ -1,6 +1,6 @@
 package com.example.demo.curd.service.impl;
 
-import com.example.demo.curd.Repository.IndexRepository;
+import com.example.demo.curd.repository.IndexRepository;
 import com.example.demo.curd.dto.HelloWorldDto;
 import com.example.demo.curd.entity.HelloWorldEntity;
 import com.example.demo.curd.mapper.HelloWorldMapper;
