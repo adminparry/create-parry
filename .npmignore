@@ -3,3 +3,8 @@
 .gitignore
 
 node_modules
+
+.vscode
+
+.idea
+

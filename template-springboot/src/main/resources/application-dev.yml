@@ -28,6 +28,17 @@ spring:
     properties:
       hibernate:
         format-sql: true
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    tokenPrefix: "token:"
+    tokenExpire: 12
+jwt:
+  secret: your-secret-key-here-should-be-very-long-and-secure
+  expiration: 86400000  # 24 hours in milliseconds
+  header: Authorization
+  token-prefix: "Bearer "
 jasypt:
   encryptor:
     password: your_grace

@@ -1,6 +1,6 @@
 #!bin/sh
 
-npm i axios vue-router pinia pinia-plugin-persistedstate tailwindcss@latest postcss@latest autoprefixer@latest
+npm i axios vue-router pinia pinia-plugin-persistedstate tailwindcss
 
 npx tailwindcss init
 
