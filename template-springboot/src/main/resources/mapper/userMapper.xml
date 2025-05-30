@@ -1,0 +1,65 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.curd.mapper.HelloWorldMapper">
+<!--    &#45;&#45; 新增语句-->
+<!--    <insert id="insert">-->
+<!--        insert into user (id, name)-->
+<!--        values (1, 'z3');-->
+<!--    </insert>-->
+
+<!--    &#45;&#45; 删除语句-->
+<!--    <delete id = "deleteUserByIdAndName">-->
+<!--        delete from user-->
+<!--        where name = #{name}-->
+<!--        and id = #{id}-->
+<!--    </delete>-->
+
+<!--    &#45;&#45; 修改语句-->
+<!--    <update id="updateUserById">-->
+<!--        update user-->
+<!--        set name = #{name}-->
+<!--        where id = #{id}-->
+<!--    </update>-->
+
+<!--    &#45;&#45; 查询语句-->
+<!--    <select id="selectUserByName" resultMap="userMap">-->
+<!--        select id, name-->
+<!--        from user-->
+<!--        where name = 'z3'-->
+<!--    </select>-->
+
+<!--    &#45;&#45; sql片段-->
+<!--    <sql id="user">-->
+<!--        id,-->
+<!--        name-->
+<!--    </sql>-->
+<!--    &#45;&#45; 引用-->
+<!--    <include refid="user"/>-->
+
+<!--    &#45;&#45; resultMap-->
+<!--    <resultMap type="Assets" id="userMap">-->
+<!--        <id property="id" column="id" />-->
+<!--        <result property="name" column="name" />-->
+<!--    </resultMap>-->
+<!--    &#45;&#45; 引用-->
+<!--    <select id="queryListByParam" parameterType="map" resultMap="userMap">-->
+<!--        do...-->
+<!--    </select>-->
+
+<!--    &#45;&#45; 条件判断-->
+<!--    <if test="name != null and name != ''">-->
+<!--        name = #{name}-->
+<!--    </if>-->
+
+<!--    &#45;&#45; 子查询-->
+<!--    <select id="selectUserByTeacherIdAndName" resultMap="userMap">-->
+<!--        select u.id, u.name-->
+<!--        from user u-->
+<!--        where u.name in (-->
+<!--        select t.name-->
+<!--        from teacher t-->
+<!--        where t.id = 1-->
+<!--        and t.name = 'z3'-->
+<!--        )-->
+<!--        and u.id = 2-->
+<!--    </select>-->
+</mapper>

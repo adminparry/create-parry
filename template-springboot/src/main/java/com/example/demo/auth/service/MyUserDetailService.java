@@ -1,16 +1,18 @@
 package com.example.demo.auth.service;
 
-import com.example.demo.entity.User;
+import com.example.demo.auth.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import java.util.Collections;
 
+@Service
 public class MyUserDetailService implements UserDetailsService {
 
     @Autowired

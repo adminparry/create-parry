@@ -10,23 +10,39 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
   datasource:
-    url: ENC(ZCqUOPrSLwTL9Aptjjl5/rzFVZ5BDJSD2+5to8aAZnr2UphLawMmE5QkPwXcolgq+mGBLntY9Yksfyxw1TDFlA==)
-    username: ENC(2dwq/1A3Izar5AxsXgp+uRKmyBN4NWkK)
-    password: ENC(dJT0HkQvDEYOFPbdvlxo3Epaat/czOph)
-    driver-class-name: org.postgresql.Driver
-    hikari:
-      max-lifetime: 1800000  # 连接最大寿命 30min
-      connection-timeout: 1800000  # 连接超时时间 30min
-      minimum-idle: 100   # 最小空闲连接数
-      maximum-pool-size: 200  # 最大连接池大小
-      connection-test-query: "select 1"
-      idle-timeout: 600000 # 空闲连接超时时长 10min
+    primary:
+      url: jdbc:postgresql://localhost:5432/public?useSSL=false&serverTimezone=UTC
+      username: postgres
+      password: 123456
+      driver-class-name: org.postgresql.Driver
+      hikari:
+        max-lifetime: 1800000  # 连接最大寿命 30min
+        connection-timeout: 1800000  # 连接超时时间 30min
+        minimum-idle: 100   # 最小空闲连接数
+        maximum-pool-size: 200  # 最大连接池大小
+        connection-test-query: "select 1"
+        idle-timeout: 600000 # 空闲连接超时时长 10min
+    secondary:
+      url: jdbc:mysql://localhost:3306/public?useSSL=false&serverTimezone=UTC
+      username: ENC(2dwq/1A3Izar5AxsXgp+uRKmyBN4NWkK)
+      password: 123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      hikari:
+        max-lifetime: 1800000  # 连接最大寿命 30min
+        connection-timeout: 1800000  # 连接超时时间 30min
+        minimum-idle: 100   # 最小空闲连接数
+        maximum-pool-size: 200  # 最大连接池大小
+        connection-test-query: "select 1"
+        idle-timeout: 600000 # 空闲连接超时时长 10min
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format-sql: true
   redis:
     host: localhost
@@ -34,6 +50,14 @@ spring:
     database: 0
     tokenPrefix: "token:"
     tokenExpire: 12
+mybatis-plus:
+  # MyBatis-Plus配置只对secondary数据源生效
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
 jwt:
   secret: your-secret-key-here-should-be-very-long-and-secure
   expiration: 86400000  # 24 hours in milliseconds
