@@ -1,0 +1,11 @@
+<p>root works!</p>
+<button (click)="increment()">+</button>
+<span>{{ count | async }}</span>
+<button (click)="decrement()">-</button>
+<a routerLink="/home" [queryParams]="{name: 'foo'}">home</a>
+<br>
+<a [routerLink]="['/home',  'bar']">home1</a>
+<br>
+<a routerLink="/user/login">user</a>
+
+<router-outlet></router-outlet>
