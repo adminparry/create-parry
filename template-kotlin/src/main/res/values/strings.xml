@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Android API Demo</string>
+    <string name="search_hint">搜索 API</string>
+    <string name="no_apis_found">没有找到相关 API</string>
+    <string name="error_loading_apis">加载 API 列表失败</string>
+    <string name="try_again">重试</string>
+    <string name="connecting">正在连接...</string>
+    <string name="connection_success">连接成功</string>
+    <string name="connection_failed">连接失败</string>
+    <string name="permission_required">需要位置权限来扫描WiFi网络</string>
+</resources> 

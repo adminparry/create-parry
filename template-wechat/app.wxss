@@ -1,0 +1,64 @@
+/**app.wxss**/
+.container {
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+.section {
+  margin-bottom: 30rpx;
+  background: #fff;
+  border-radius: 10rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  font-size: 32rpx;
+  color: #333;
+  margin-bottom: 20rpx;
+  font-weight: bold;
+}
+
+.section-content {
+  margin-bottom: 20rpx;
+}
+
+.demo-block {
+  margin-bottom: 20rpx;
+  padding: 20rpx;
+  border: 1px solid #eee;
+  border-radius: 8rpx;
+}
+
+.demo-text {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 8rpx;
+  padding: 20rpx 40rpx;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.margin-right {
+  margin-right: 20rpx;
+} 

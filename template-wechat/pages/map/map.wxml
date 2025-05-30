@@ -1,0 +1,76 @@
+<view class="container">
+  <view class="section">
+    <view class="section-title">地图组件</view>
+    <map
+      id="myMap"
+      class="demo-map"
+      longitude="{{longitude}}"
+      latitude="{{latitude}}"
+      scale="{{scale}}"
+      markers="{{markers}}"
+      polyline="{{polyline}}"
+      show-location
+      bindmarkertap="markerTap"
+      bindregionchange="regionChange"
+    ></map>
+  </view>
+
+  <view class="section">
+    <view class="section-title">地图控制</view>
+    <view class="control-panel">
+      <button type="primary" bindtap="moveToLocation" class="control-btn">
+        <text class="btn-text">定位</text>
+      </button>
+      <button type="primary" bindtap="addMarker" class="control-btn">
+        <text class="btn-text">添加标记</text>
+      </button>
+      <button type="primary" bindtap="drawRoute" class="control-btn">
+        <text class="btn-text">绘制路线</text>
+      </button>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">地图信息</view>
+    <view class="info-panel">
+      <view class="info-item">
+        <text class="info-label">当前经度：</text>
+        <text class="info-value">{{longitude}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">当前纬度：</text>
+        <text class="info-value">{{latitude}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">缩放级别：</text>
+        <text class="info-value">{{scale}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">地图搜索</view>
+    <view class="search-box">
+      <input 
+        type="text" 
+        placeholder="搜索地点" 
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+        class="search-input"
+      />
+      <button type="primary" bindtap="searchLocation" class="search-btn">搜索</button>
+    </view>
+    <view class="search-results" wx:if="{{searchResults.length > 0}}">
+      <view 
+        class="result-item" 
+        wx:for="{{searchResults}}" 
+        wx:key="id"
+        bindtap="selectLocation"
+        data-location="{{item}}"
+      >
+        <text class="result-name">{{item.name}}</text>
+        <text class="result-address">{{item.address}}</text>
+      </view>
+    </view>
+  </view>
+</view> 

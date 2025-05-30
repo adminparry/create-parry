@@ -68,3 +68,9 @@ jasypt:
     password: your_grace
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.RandomIvGenerator
+
+# 代理配置
+http:
+  port: 8080
+  proxy:
+    host: proxy.example.com

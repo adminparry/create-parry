@@ -1,0 +1,79 @@
+<view class="container">
+  <view class="section">
+    <view class="section-title">button 按钮</view>
+    <view class="demo-block">
+      <button type="primary" class="margin-bottom">主要按钮</button>
+      <button type="default" class="margin-bottom">默认按钮</button>
+      <button type="warn">警告按钮</button>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">input 输入框</view>
+    <view class="demo-block">
+      <input placeholder="普通输入框" class="input-item"/>
+      <input type="number" placeholder="数字输入框" class="input-item"/>
+      <input password placeholder="密码输入框" class="input-item"/>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">radio 单选框</view>
+    <view class="demo-block">
+      <radio-group bindchange="radioChange">
+        <label class="radio-item" wx:for="{{radioItems}}" wx:key="value">
+          <radio value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
+        </label>
+      </radio-group>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">checkbox 复选框</view>
+    <view class="demo-block">
+      <checkbox-group bindchange="checkboxChange">
+        <label class="checkbox-item" wx:for="{{checkboxItems}}" wx:key="value">
+          <checkbox value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
+        </label>
+      </checkbox-group>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">switch 开关</view>
+    <view class="demo-block">
+      <view class="switch-item">
+        <text>默认开关</text>
+        <switch checked bindchange="switchChange"/>
+      </view>
+      <view class="switch-item">
+        <text>自定义颜色</text>
+        <switch color="#3498db"/>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">slider 滑动选择器</view>
+    <view class="demo-block">
+      <slider bindchange="sliderChange" show-value/>
+      <slider bindchange="sliderChange" show-value min="50" max="200" value="100"/>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">picker 选择器</view>
+    <view class="demo-block">
+      <picker mode="date" value="{{date}}" start="2015-09-01" end="2025-09-01" bindchange="dateChange">
+        <view class="picker-item">
+          当前选择: {{date}}
+        </view>
+      </picker>
+      <picker mode="time" value="{{time}}" bindchange="timeChange">
+        <view class="picker-item">
+          当前选择: {{time}}
+        </view>
+      </picker>
+    </view>
+  </view>
+</view> 

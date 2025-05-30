@@ -1,0 +1,38 @@
+<view class="container">
+  <view class="header">
+    <text class="title">微信小程序组件展示</text>
+    <text class="subtitle">点击卡片查看详细组件</text>
+  </view>
+
+  <view class="grid">
+    <navigator url="/pages/basic/basic" class="grid-item">
+      <image src="/images/basic.png" mode="aspectFit" class="grid-icon"></image>
+      <text class="grid-text">基础组件</text>
+      <text class="grid-desc">view、text、icon等</text>
+    </navigator>
+
+    <navigator url="/pages/form/form" class="grid-item">
+      <image src="/images/form.png" mode="aspectFit" class="grid-icon"></image>
+      <text class="grid-text">表单组件</text>
+      <text class="grid-desc">button、input、form等</text>
+    </navigator>
+
+    <navigator url="/pages/media/media" class="grid-item">
+      <image src="/images/media.png" mode="aspectFit" class="grid-icon"></image>
+      <text class="grid-text">媒体组件</text>
+      <text class="grid-desc">image、video、audio等</text>
+    </navigator>
+
+    <navigator url="/pages/navigation/navigation" class="grid-item">
+      <image src="/images/navigation.png" mode="aspectFit" class="grid-icon"></image>
+      <text class="grid-text">导航组件</text>
+      <text class="grid-desc">navigator、tabbar等</text>
+    </navigator>
+
+    <navigator url="/pages/map/map" class="grid-item">
+      <image src="/images/map.png" mode="aspectFit" class="grid-icon"></image>
+      <text class="grid-text">地图组件</text>
+      <text class="grid-desc">map、location等</text>
+    </navigator>
+  </view>
+</view> 

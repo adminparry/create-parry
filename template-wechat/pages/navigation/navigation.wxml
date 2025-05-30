@@ -1,0 +1,65 @@
+<view class="container">
+  <view class="section">
+    <view class="section-title">导航栏交互</view>
+    <view class="demo-block">
+      <button type="primary" bindtap="showNavigationBarLoading">显示导航栏加载</button>
+      <button type="primary" bindtap="setNavigationBarTitle" class="margin-top">修改导航栏标题</button>
+      <button type="primary" bindtap="setNavigationBarColor" class="margin-top">修改导航栏颜色</button>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">页面跳转</view>
+    <view class="demo-block">
+      <navigator url="/pages/basic/basic" open-type="navigate" class="nav-item">
+        <view class="nav-content">
+          <text>跳转到基础组件页面</text>
+          <text class="nav-arrow">></text>
+        </view>
+      </navigator>
+      <navigator url="/pages/form/form" open-type="navigate" class="nav-item">
+        <view class="nav-content">
+          <text>跳转到表单组件页面</text>
+          <text class="nav-arrow">></text>
+        </view>
+      </navigator>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">交互反馈</view>
+    <view class="demo-block">
+      <button type="primary" bindtap="showToast" class="margin-bottom">显示提示框</button>
+      <button type="primary" bindtap="showModal" class="margin-bottom">显示模态对话框</button>
+      <button type="primary" bindtap="showActionSheet">显示操作菜单</button>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">下拉刷新</view>
+    <view class="demo-block">
+      <view class="refresh-info">{{refreshStatus}}</view>
+      <view class="refresh-tip">下拉页面即可刷新</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">自定义导航菜单</view>
+    <view class="custom-nav">
+      <view class="nav-tab {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-tab="0">
+        选项一
+      </view>
+      <view class="nav-tab {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-tab="1">
+        选项二
+      </view>
+      <view class="nav-tab {{currentTab === 2 ? 'active' : ''}}" bindtap="switchTab" data-tab="2">
+        选项三
+      </view>
+    </view>
+    <view class="tab-content">
+      <view wx:if="{{currentTab === 0}}">选项一内容</view>
+      <view wx:if="{{currentTab === 1}}">选项二内容</view>
+      <view wx:if="{{currentTab === 2}}">选项三内容</view>
+    </view>
+  </view>
+</view> 

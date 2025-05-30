@@ -1,0 +1,47 @@
+<view class="container">
+  <view class="section">
+    <view class="section-title">view 视图容器</view>
+    <view class="demo-block">
+      <view class="flex-row space-between">
+        <view style="background: #3498db; padding: 20rpx; color: white;">Flex Item 1</view>
+        <view style="background: #2ecc71; padding: 20rpx; color: white;">Flex Item 2</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">text 文本</view>
+    <view class="demo-block">
+      <text class="demo-text" selectable="true">这是一段可选择的文本</text>
+      <text class="demo-text" decode="true">这是一段解码文本 &nbsp; &lt; &gt; &amp; &apos; &ensp; &emsp;</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">icon 图标</view>
+    <view class="demo-block">
+      <view class="flex-row">
+        <icon type="success" size="40" class="margin-right"/>
+        <icon type="info" size="40" class="margin-right"/>
+        <icon type="warn" size="40" class="margin-right"/>
+        <icon type="waiting" size="40" class="margin-right"/>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">progress 进度条</view>
+    <view class="demo-block">
+      <progress percent="20" show-info/>
+      <progress percent="40" stroke-width="12" color="#3498db"/>
+      <progress percent="60" active color="#2ecc71"/>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">rich-text 富文本</view>
+    <view class="demo-block">
+      <rich-text nodes="{{richTextNodes}}"></rich-text>
+    </view>
+  </view>
+</view> 

@@ -1,0 +1,133 @@
+<view class="container">
+  <!-- 下拉刷新和上拉加载列表 -->
+  <view class="section">
+    <view class="section-title">
+      <text>高级列表</text>
+      <text class="section-subtitle">下拉刷新 & 上拉加载</text>
+    </view>
+    <scroll-view 
+      class="scroll-list"
+      scroll-y
+      refresher-enabled="{{true}}"
+      refresher-triggered="{{isRefreshing}}"
+      bindrefresherrefresh="onRefresh"
+      bindscrolltolower="onLoadMore"
+      bindscroll="throttledScroll"
+      style="height: 600rpx;"
+    >
+      <view class="virtual-list" style="{{listStyle}}">
+        <view 
+          class="list-item {{item.selected ? 'selected' : ''}}"
+          wx:for="{{visibleData}}" 
+          wx:key="id"
+          bindtap="onItemTap"
+          data-item="{{item}}"
+        >
+          <view class="item-content">
+            <image class="item-avatar" src="{{item.avatar}}" mode="aspectFill" lazy-load></image>
+            <view class="item-info">
+              <text class="item-title">{{item.title}}</text>
+              <text class="item-desc">{{item.description}}</text>
+            </view>
+            <view class="item-right">
+              <text class="item-time">{{item.time}}</text>
+              <view class="item-status" style="background: {{item.status.color}}">
+                {{item.status.text}}
+              </view>
+            </view>
+          </view>
+          <view class="item-actions" wx:if="{{item.selected}}">
+            <button size="mini" type="primary" catch:tap="onEditItem" data-id="{{item.id}}">编辑</button>
+            <button size="mini" type="warn" catch:tap="onDeleteItem" data-id="{{item.id}}">删除</button>
+          </view>
+        </view>
+      </view>
+      <view class="loading-more" wx:if="{{isLoadingMore}}">正在加载更多...</view>
+    </scroll-view>
+  </view>
+
+  <!-- 动画展示 -->
+  <view class="section">
+    <view class="section-title">
+      <text>动画效果</text>
+      <text class="section-subtitle">点击查看动画</text>
+    </view>
+    <view class="animation-container">
+      <view class="animation-box" animation="{{animationData}}" bindtap="runAnimation">
+        <text>点击我</text>
+      </view>
+      <view class="animation-controls">
+        <button size="mini" type="primary" bindtap="runRotate">旋转</button>
+        <button size="mini" type="primary" bindtap="runScale">缩放</button>
+        <button size="mini" type="primary" bindtap="runTranslate">移动</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 自定义日历 -->
+  <view class="section">
+    <view class="section-title">
+      <text>自定义日历</text>
+      <text class="section-subtitle">支持日期选择和事件标记</text>
+    </view>
+    <view class="calendar">
+      <view class="calendar-header">
+        <text class="calendar-arrow" bindtap="prevMonth">◀</text>
+        <text>{{currentYear}}年{{currentMonth}}月</text>
+        <text class="calendar-arrow" bindtap="nextMonth">▶</text>
+      </view>
+      <view class="calendar-body">
+        <view class="calendar-weekdays">
+          <text wx:for="{{weekdays}}" wx:key="*this">{{item}}</text>
+        </view>
+        <view class="calendar-days">
+          <view 
+            class="calendar-day {{item.current ? '' : 'other-month'}} {{item.selected ? 'selected' : ''}} {{item.hasEvent ? 'has-event' : ''}}"
+            wx:for="{{days}}" 
+            wx:key="date"
+            bindtap="selectDate"
+            data-date="{{item.date}}"
+          >
+            <text>{{item.day}}</text>
+            <view class="day-marker" wx:if="{{item.hasEvent}}"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 图表组件 -->
+  <view class="section">
+    <view class="section-title">
+      <text>数据可视化</text>
+      <text class="section-subtitle">自定义图表展示</text>
+    </view>
+    <view class="chart-container">
+      <canvas canvas-id="lineChart" class="chart"></canvas>
+      <view class="chart-legend">
+        <view class="legend-item" wx:for="{{chartLegend}}" wx:key="name">
+          <view class="legend-color" style="background: {{item.color}}"></view>
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 手势操作区域 -->
+  <view class="section">
+    <view class="section-title">
+      <text>手势操作</text>
+      <text class="section-subtitle">支持多种手势交互</text>
+    </view>
+    <view 
+      class="gesture-container"
+      bindtouchstart="touchStart"
+      bindtouchmove="touchMove"
+      bindtouchend="touchEnd"
+    >
+      <view class="gesture-box" style="transform: scale({{scale}}) rotate({{rotation}}deg) translate({{translateX}}px, {{translateY}}px)">
+        <text>拖动、缩放、旋转我</text>
+      </view>
+    </view>
+  </view>
+</view> 

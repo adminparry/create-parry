@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RCC>
+    <qresource prefix="/icons">
+        <file>icons/repository.png</file>
+        <file>icons/branch.png</file>
+        <file>icons/tag.png</file>
+        <file>icons/remote.png</file>
+        <file>icons/commit.png</file>
+        <file>icons/push.png</file>
+        <file>icons/pull.png</file>
+        <file>icons/merge.png</file>
+        <file>icons/add.png</file>
+        <file>icons/delete.png</file>
+        <file>icons/refresh.png</file>
+        <file>icons/folder.png</file>
+        <file>icons/file.png</file>
+    </qresource>
+</RCC> 

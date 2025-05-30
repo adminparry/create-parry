@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_linear_layout"
+            android:icon="@drawable/ic_linear_layout"
+            android:title="Linear Layout" />
+        <item
+            android:id="@+id/nav_relative_layout"
+            android:icon="@drawable/ic_relative_layout"
+            android:title="Relative Layout" />
+        <item
+            android:id="@+id/nav_constraint_layout"
+            android:icon="@drawable/ic_constraint_layout"
+            android:title="Constraint Layout" />
+        <item
+            android:id="@+id/nav_frame_layout"
+            android:icon="@drawable/ic_frame_layout"
+            android:title="Frame Layout" />
+        <item
+            android:id="@+id/nav_grid_layout"
+            android:icon="@drawable/ic_grid_layout"
+            android:title="Grid Layout" />
+    </group>
+</menu> 

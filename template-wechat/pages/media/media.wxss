@@ -1,0 +1,31 @@
+.image-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.demo-image {
+  width: 100%;
+  height: 200rpx;
+  border-radius: 8rpx;
+}
+
+.demo-video {
+  width: 100%;
+  height: 400rpx;
+  border-radius: 8rpx;
+}
+
+.demo-audio {
+  width: 100%;
+}
+
+.demo-camera {
+  width: 100%;
+  height: 400rpx;
+  border-radius: 8rpx;
+}
+
+.margin-top {
+  margin-top: 20rpx;
+} 

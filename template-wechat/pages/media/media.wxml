@@ -1,0 +1,55 @@
+<view class="container">
+  <view class="section">
+    <view class="section-title">image 图片</view>
+    <view class="demo-block">
+      <view class="image-list">
+        <image src="/images/demo.jpg" mode="aspectFit" class="demo-image"/>
+        <image src="/images/demo.jpg" mode="aspectFill" class="demo-image"/>
+        <image src="/images/demo.jpg" mode="widthFix" class="demo-image"/>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">video 视频</view>
+    <view class="demo-block">
+      <video
+        id="myVideo"
+        src="http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400"
+        controls
+        poster="/images/video-poster.jpg"
+        object-fit="cover"
+        class="demo-video"
+      ></video>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">audio 音频</view>
+    <view class="demo-block">
+      <audio
+        id="myAudio"
+        src="http://ws.stream.qqmusic.qq.com/M500001VfvsJ21xFqb.mp3?guid=ffffffff82def4af4b12b3cd9337d5e7&uin=346897220"
+        controls
+        loop
+        poster="/images/audio-poster.jpg"
+        name="此时此刻"
+        author="许巍"
+        class="demo-audio"
+      ></audio>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">camera 相机</view>
+    <view class="demo-block">
+      <camera
+        device-position="back"
+        flash="off"
+        binderror="error"
+        class="demo-camera"
+      ></camera>
+      <button type="primary" bindtap="takePhoto" class="margin-top">拍照</button>
+    </view>
+  </view>
+</view> 

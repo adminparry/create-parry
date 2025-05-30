@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Android Layouts Demo</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="nav_header_subtitle">Android Layout Patterns</string>
+    
+    <!-- Layout Names -->
+    <string name="linear_layout">Linear Layout</string>
+    <string name="relative_layout">Relative Layout</string>
+    <string name="constraint_layout">Constraint Layout</string>
+    <string name="frame_layout">Frame Layout</string>
+    <string name="grid_layout">Grid Layout</string>
+</resources> 
