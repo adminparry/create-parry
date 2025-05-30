@@ -6,16 +6,19 @@ you can generate a new project with the following command:
 npm create parry@latest
 ```
 
-## springboot
-
-## vue
-
-## qt
-
 ## android
-
+## angular
+## expressjs
 ## flutter
-
-## react
-
+## kafka
+## kotlin
 ## nestjs
+## nuxtjs
+## qt
+## react
+## redis
+## springboot
+## springcloud
+## vant
+## vue
+## wechat
