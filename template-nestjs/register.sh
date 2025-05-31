@@ -1,0 +1,1 @@
+curl -X POST -H "Content-Type: application/json" -d '{usrename:23,password:3,email:qq.com}'
