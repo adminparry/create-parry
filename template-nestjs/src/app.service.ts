@@ -19,7 +19,7 @@ export class AppService {
 
   async getUsers() {
     const users = await this.userRepository.find({
-      select: ['id', 'username', 'email'] 
+      // select: ['id', 'username', 'email'] 
     });
     return users;
   }
