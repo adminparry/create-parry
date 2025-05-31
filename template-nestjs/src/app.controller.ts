@@ -17,7 +17,7 @@ export class AppController {
 
   @Get("users")
   async getUsers() {
-    const users:User[] = await this.appService.getUsers();
+    const users = await this.appService.getUsers();
     return CommonResponse.successWithData(users);
   }
 }
