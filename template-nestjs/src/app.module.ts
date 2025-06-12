@@ -6,10 +6,11 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { databaseConfig } from './config/database.config';
 import { User } from './entities/user.entity';
+import { Locale } from './entities/locale.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Locale]),
     ConfigModule.forRoot({
       isGlobal: true,
     }),

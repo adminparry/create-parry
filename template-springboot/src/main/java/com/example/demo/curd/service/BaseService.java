@@ -4,12 +4,12 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import com.example.demo.curd.mapper.IndexMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class IndexService<M extends IndexMapper<T>, T> {
+public abstract class BaseService<M extends IndexMapper<T>, T> {
 
     @Autowired
     protected M mapper;
 
-    public IndexService() {
+    public BaseService() {
     }
 
     protected LambdaQueryChainWrapper<T> query() {

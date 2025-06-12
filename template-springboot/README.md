@@ -1,6 +1,7 @@
-简简单单做人 简简单单做事
+# 为提高开发效率 应用脚手架包含一般后台应用基本功能
 
-为提高开发效率 应用脚手架包含一般后台应用基本功能
+> functional
+
 
 数据库增删改查
 
@@ -17,6 +18,16 @@ rabbitmq kafka 连接
 docker 部署
 
 Jenkins pipeline
+
+访问频率限制
+
+> ref
+
+https://docs.jboss.com.cn/hibernate/stable/entitymanager/reference/en/html_single/
+
+
+
+
 
 
 

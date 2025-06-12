@@ -24,6 +24,16 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/search', kgSearchRouter);
 
+const rbac = require('./middleware/rbac');
+const { createUser, getUsers } = require('./routes/user');
+
+// 只有具有 'user_create' 权限的角色可以访问
+router.post('/users', rbac('user_create'), createUser);
+
+// 只有具有 'user_read' 权限的角色可以访问
+router.get('/users', rbac('user_read'), getUsers);
+
+module.exports = router;
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -40,5 +50,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 
 module.exports = app;

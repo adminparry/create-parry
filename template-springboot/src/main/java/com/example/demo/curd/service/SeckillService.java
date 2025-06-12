@@ -1,6 +1,8 @@
 package com.example.demo.curd.service;
 
 
+import org.apache.ibatis.annotations.Mapper;
+
 public interface SeckillService {
 
 //    分布式锁

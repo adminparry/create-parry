@@ -5,7 +5,7 @@ import com.example.demo.curd.dto.HelloWorldDto;
 import com.example.demo.curd.entity.HelloWorldEntity;
 import com.example.demo.curd.mapper.HelloWorldMapper;
 import com.example.demo.curd.service.HelloWorldService;
-import com.example.demo.curd.service.IndexService;
+import com.example.demo.curd.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class HelloWorldImpl extends IndexService<HelloWorldMapper, HelloWorldEntity> implements HelloWorldService {
+public class HelloWorldImpl extends BaseService<HelloWorldMapper, HelloWorldEntity> implements HelloWorldService {
 
     @Override
     public List<HelloWorldDto> selectByHelloWorld() {

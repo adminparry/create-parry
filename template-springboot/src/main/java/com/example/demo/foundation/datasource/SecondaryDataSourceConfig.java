@@ -19,14 +19,8 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(basePackages = "com.example.demo", sqlSessionFactoryRef = "secondarySqlSessionFactory")
+@MapperScan(basePackages = "com.example.demo.curd.mapper", sqlSessionFactoryRef = "secondarySqlSessionFactory")
 public class SecondaryDataSourceConfig {
-
-    @Bean(name = "secondaryDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.secondary")
-    public DataSource secondaryDataSource() {
-        return DataSourceBuilder.create().type(HikariDataSource.class).build();
-    }
 
     @Bean(name = "secondarySqlSessionFactory")
     public SqlSessionFactory secondarySqlSessionFactory(
@@ -36,7 +30,7 @@ public class SecondaryDataSourceConfig {
         sessionFactory.setMapperLocations(
                 new PathMatchingResourcePatternResolver()
                         .getResources("classpath:mapper/*.xml"));
-        sessionFactory.setTypeAliasesPackage("com.example.demo");
+        sessionFactory.setTypeAliasesPackage("com.example.demo.curd.entity");
 
         // MyBatis-Plus配置
         MybatisConfiguration configuration = new MybatisConfiguration();

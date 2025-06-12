@@ -24,27 +24,11 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.example.demo",
+        basePackages = "com.example.demo.curd.repository",
         entityManagerFactoryRef = "primaryEntityManagerFactory",
         transactionManagerRef = "primaryTransactionManager"
 )
 public class PrimaryDataSourceConfig {
-
-    @Value("${spring.datasource.primary.url}")
-    private String url;
-    @Value("${spring.datasource.primary.driver-class-name}")
-    private String driverClassName;
-    @Value("${spring.datasource.primary.username}")
-    private String username;
-    @Value("${spring.datasource.primary.password}")
-    private String password;
-
-    @Primary
-    @Bean(name = "primaryDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.primary")
-    public DataSource primaryDataSource() {
-        return DataSourceBuilder.create().url(url).driverClassName(driverClassName).password(password).username(username).type(HikariDataSource.class).build();
-    }
 
     @Primary
     @Bean(name = "primaryEntityManagerFactory")
@@ -53,7 +37,7 @@ public class PrimaryDataSourceConfig {
             @Qualifier("primaryDataSource") DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
-                .packages("com.example.demo")
+                .packages("com.example.demo.curd.entity","com.example.demo.auth.entity")
                 .persistenceUnit("primary")
                 .properties(jpaProperties())
                 .build();
@@ -62,7 +46,7 @@ public class PrimaryDataSourceConfig {
     private Map<String, Object> jpaProperties() {
         Map<String, Object> props = new HashMap<>();
         props.put("hibernate.hbm2ddl.auto", "update");
-        props.put("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+        props.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         props.put("hibernate.show_sql", "true");
         props.put("hibernate.format_sql", "true");
         return props;
