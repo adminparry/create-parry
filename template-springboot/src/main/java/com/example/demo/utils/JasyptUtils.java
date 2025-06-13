@@ -55,8 +55,8 @@ public class JasyptUtils {
         // 加密
         String encryptStr = encrypt("your_grace", "root");
         // 解密
-//        String decryptStr = decrypt("1selffounding2DF34FDQdf12GS", "");
-        log.info(encryptStr);
-//        log.info(decryptStr);
+        String decryptStr = decrypt("your_grace", "2dwq/1A3Izar5AxsXgp+uRKmyBN4NWkK");
+//        log.info(encryptStr);
+        log.info(decryptStr);
     }
 }

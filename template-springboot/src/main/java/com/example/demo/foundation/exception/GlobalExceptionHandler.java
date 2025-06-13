@@ -1,5 +1,6 @@
 package com.example.demo.foundation.exception;
 
+import com.example.demo.auth.exception.SsoException;
 import com.example.demo.utils.ApiResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(BusinessException.class)
+    @ExceptionHandler({BusinessException.class, SsoException.class})
     public ApiResponseUtil<?> handleBusinessException(BusinessException e) {
         log.error("Business exception: {}", e.getMessage());
         return ApiResponseUtil.error(e.getCode(), e.getMessage());

@@ -15,7 +15,6 @@ import java.util.List;
 
 @Data
 @ConfigurationProperties(prefix = "sso")
-@Component
 public class SsoConfig {
 
     private List<String> whiteList;

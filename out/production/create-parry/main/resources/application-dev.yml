@@ -1,9 +1,6 @@
 spring:
-  jackson:
-    encoding:
-      charset: UTF-8
   kafka:
-    bootstrap-servers: 192.168.2.2:9092
+    bootstrap-servers: localhost:9092
     consumer:
       group-id: my-group
       auto-offset-reset: earliest
@@ -14,7 +11,7 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
   datasource:
     primary:
-      url: jdbc:postgresql://192.168.2.2:5432/public?useSSL=false&serverTimezone=UTC
+      url: jdbc:postgresql://localhost:5432/public?useSSL=false&serverTimezone=UTC
       username: postgres
       password: 123456
       driver-class-name: org.postgresql.Driver
@@ -26,8 +23,8 @@ spring:
         connection-test-query: "select 1"
         idle-timeout: 600000 # 空闲连接超时时长 10min
     secondary:
-      url: jdbc:mysql://192.168.2.2:3306/public?useSSL=false&serverTimezone=UTC
-      username: root
+      url: jdbc:mysql://localhost:3306/public?useSSL=false&serverTimezone=UTC
+      username: ENC(2dwq/1A3Izar5AxsXgp+uRKmyBN4NWkK)
       password: 123456
       driver-class-name: com.mysql.cj.jdbc.Driver
       hikari:
@@ -49,7 +46,7 @@ spring:
           use_jdbc_metadata_defaults: false
         format-sql: true
   redis:
-    host: 192.168.2.2
+    host: localhost
     port: 6379
     database: 0
 sso:
@@ -58,7 +55,7 @@ sso:
   JWT_EXPIRATION: 86400000
   REDIS_PREFIX: "sso:token:"
   white-list:
-    - /api/v1/auth/*
+    - /api/v1/auth/login
     - /api/v1/white-list/**
 
 mybatis-plus:
