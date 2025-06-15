@@ -16,9 +16,9 @@ import ${import};
     /**
      * ${column.columnComment!""}
      */
-    <#if column.isPrimaryKey>
+    <#if column.isPrimaryKey()>
     @Id
-    <#if column.isAutoIncrement>
+    <#if column.isAutoIncrement()>
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     </#if>
     </#if>
