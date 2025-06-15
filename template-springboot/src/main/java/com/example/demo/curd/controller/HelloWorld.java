@@ -5,6 +5,7 @@ import com.example.demo.curd.service.SeckillService;
 import com.example.demo.foundation.annotation.Index;
 import com.example.demo.curd.dto.HelloWorldDto;
 import com.example.demo.curd.service.HelloWorldService;
+import com.example.demo.foundation.annotation.Permission;
 import com.example.demo.utils.ApiResponseUtil;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/white-list")
+@Permission(code = "666")
 public class HelloWorld {
 
 
@@ -41,6 +43,7 @@ public class HelloWorld {
     }
 
     @RequestMapping("/test")
+    @Index(value = "3333")
     public ApiResponseUtil<List<User>> test(){
         ArrayList list = new ArrayList();
         User u = new User();

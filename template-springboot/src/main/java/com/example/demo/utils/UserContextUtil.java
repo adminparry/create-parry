@@ -1,15 +1,12 @@
-package com.example.demo.auth.config;
+package com.example.demo.utils;
 
-import lombok.Data;
 import org.springframework.core.NamedInheritableThreadLocal;
-import org.springframework.core.NamedThreadLocal;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class UserContextHolder {
+public class UserContextUtil {
 
     private static final ThreadLocal<Map<String,  Object>> USER_LOCAL = new NamedInheritableThreadLocal<>("userLocal");
 

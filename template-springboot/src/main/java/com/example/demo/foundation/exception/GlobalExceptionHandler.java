@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(BusinessException.class)
+    @ExceptionHandler({BusinessException.class, SsoException.class})
     public ApiResponseUtil<?> handleBusinessException(BusinessException e) {
         log.error("Business exception: {}", e.getMessage());
         return ApiResponseUtil.error(e.getCode(), e.getMessage());

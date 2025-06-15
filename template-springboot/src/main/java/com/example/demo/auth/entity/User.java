@@ -1,6 +1,7 @@
 package com.example.demo.auth.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,9 +12,11 @@ import java.time.LocalTime;
 @Table(name="users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "snowflake")
+    @GenericGenerator(name = "snowflake", strategy = "com.example.demo.utils.SnowflakeUtil")
     private Long id;
 
+    @Column(unique=true)
     private String username;
 
     private String password;
