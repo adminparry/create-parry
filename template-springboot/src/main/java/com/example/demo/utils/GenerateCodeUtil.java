@@ -1,227 +1,204 @@
 package com.example.demo.utils;
 
 import com.example.demo.auth.entity.User;
+import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
+import java.sql.*;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class GenerateCodeUtil {
-
-    private static String getJavaSorucePath(){
-        String projectRoot = System.getProperty("user.dir");
-        String javaSourcePath = projectRoot + File.separator + "template-springboot" + File.separator + "src" + File.separator + "main" + File.separator + "java";
-
-        return  javaSourcePath;
-    }
-    public static void main(String[] args) throws IOException {
-
-
-        // 生成CRUD代码
-        GenerateCodeUtil.generateCRUD(
-                User.class,
-                "com.example.demo.curd",
-                getJavaSorucePath()
-        );
+    /**
+     *  数据库表名转实体类名称
+     */
+    private static String tableNameToEntityName(String input){
+        return StringUtils.capitalize(input.toLowerCase().replaceAll("_([a-z])", "$1").toUpperCase());
     }
     /**
-     * 生成完整的CRUD代码结构
-     * @param entityClass 实体类
-     * @param packageName 基础包名(如: com.example.demo)
-     * @param outputDir 输出目录
+     * 数据库类型转java类型
+     * @param dbType
+     * @return
      */
-    public static void generateCRUD(Class<?> entityClass, String packageName, String outputDir) {
-        String entityName = entityClass.getSimpleName();
-        String varName = toLowerFirst(entityName);
-        
+    private static String mapToJavaType(String dbType) {
+//        System.out.println(dbType);
+        switch (dbType.toUpperCase()) {
+            case "VARCHAR":
+            case "CHAR":
+            case "TEXT":
+                return "String";
+            case "INT":
+            case "INTEGER":
+                return "Integer";
+            case "BIGINT":
+                return "Long";
+            case "DECIMAL":
+            case "NUMERIC":
+                return "BigDecimal";
+            case "TIMESTAMP":
+            case "TIME":
+            case "DATETIME":
+                return "LocalDateTime";
+            case "DATE":
+                return "LocalDate";
+            case "BOOL":
+            case "BOOLEAN":
+                return "Boolean";
+            default:
+                return "Object";
+        }
+    }
+    /**
+     * 从resources中获取模版文件
+     * @return
+     */
+    /**
+     * 元数据
+     */
+    private static final String username = "postgres";
+    private static final String password = "123456";
+    private static final String jbdcUrl = "jdbc:postgresql://localhost:5432/public?useSSL=false&serverTimezone=UTC";
+    private static final String[] tables = {"users"};
+    static final String packageRoot = "template-springboot.src.main.java.";
+    private static final String packageName = "com.example.demo.curd";
+    private static final String utilPackageName = "com.example.demo.utils";
+
+    public static void main(String[] args) throws IOException, SQLException {
+
+        Arrays.stream(tables).forEach(item -> {
+
+            try {
+                List<EntityTemplateData.ColumnData>  ret = getTableColumns(item);
+
+                // 生成CRUD代码
+                GenerateCodeUtil.generateCRUD(
+                        ret,
+                        item,
+                        getJavaSourcePath(packageRoot + packageName)
+                );
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+    public static String getJavaSourcePath(String pkName){
+        String projectRoot = System.getProperty("user.dir");
+        String javaSourcePath = projectRoot + File.separator ;
+        return  javaSourcePath + pkName.replaceAll("\\.", File.separator);
+    }
+
+
+
+
+    private static List<EntityTemplateData.ColumnData> getTableColumns(String tableName) throws SQLException {
+        List<EntityTemplateData.ColumnData> columns = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(jbdcUrl, username, password)) {
+            DatabaseMetaData metaData = conn.getMetaData();
+
+            // 获取主键信息
+            ResultSet primaryKeys = metaData.getPrimaryKeys(null, null, tableName);
+            List<String> pkColumns = new ArrayList<>();
+            while (primaryKeys.next()) {
+                pkColumns.add(primaryKeys.getString("COLUMN_NAME"));
+            }
+
+            // 获取列信息
+            ResultSet rs = metaData.getColumns(null, null, tableName, null);
+            while (rs.next()) {
+                EntityTemplateData.ColumnData column = new EntityTemplateData.ColumnData();
+                String columnName = rs.getString("COLUMN_NAME");
+                column.setColumnName(columnName);
+                column.setFieldName(underscoreToCamel(columnName));
+                column.setFieldDtoName(toUpperFirst(underscoreToCamel(columnName)));
+                column.setJavaType(mapToJavaType(rs.getString("TYPE_NAME")));
+                column.setColumnComment(rs.getString("REMARKS"));
+                column.setColumnType(rs.getString("TYPE_NAME"));
+                column.setPrimaryKey(pkColumns.contains(columnName));
+                column.setAutoIncrement("YES".equals(rs.getString("IS_AUTOINCREMENT")));
+
+                columns.add(column);
+            }
+        }
+
+        return columns;
+    }
+
+    private static String underscoreToCamel(String columnName) {
+        return columnName.replaceAll("_([a-z])", "$1".toUpperCase());
+    }
+
+    public String readTemplateFromModule(String templatePath) {
+        try (InputStream inputStream = getClass().getModule().getResourceAsStream(templatePath);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
+            return reader.lines().collect(Collectors.joining("\n"));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read template file: " + templatePath, e);
+        }
+    }
+    /**
+     * 根据表名生成实体类
+     */
+    public static void generateCURDFromDataSource(){
+
+    }
+
+
+    public static void generateCRUD(List<EntityTemplateData.ColumnData> data,String tableName, String basePath) throws IOException {
+
+
         // 创建目录结构
-        String basePath = outputDir + "/" + packageName.replace(".", "/");
         new File(basePath + "/controller").mkdirs();
         new File(basePath + "/service").mkdirs();
         new File(basePath + "/repository").mkdirs();
         new File(basePath + "/dto").mkdirs();
         new File(basePath + "/entity").mkdirs();
 
-        // 生成Repository接口
-        generateRepository(entityClass, packageName, basePath);
-        
-        // 生成Service接口和实现
-        generateService(entityClass, packageName, basePath);
-        
-        // 生成Controller
-        generateController(entityClass, packageName, basePath);
-        
-        // 生成DTO
-        generateDTO(entityClass, packageName, basePath);
+        EntityGenerator generator = new EntityGenerator();
 
+        Map<String, Object> dataModel = new HashMap<>();
 
-    }
-
-    private static void generateRepository(Class<?> entityClass, String packageName, String basePath) {
-        String entityName = entityClass.getSimpleName();
-        String content = "package " + packageName + ".repository;\n\n" +
-                "import org.springframework.data.jpa.repository.JpaRepository;\n" +
-                "import org.springframework.data.domain.Page;\n" +
-                "import org.springframework.data.domain.Pageable;\n" +
-                "import " + entityClass.getName() + ";\n\n" +
-                "public interface " + entityName + "Repository extends JpaRepository<" + entityName + ", Long> {\n" +
-                "    // 自定义查询方法可以在这里添加\n" +
-                    "Page<"+entityName+"> findAll(Pageable pageable);\n"+
-                "}\n";
-        
-        writeFile(basePath + "/repository/" + entityName + "Repository.java", content);
-    }
-
-    private static void generateService(Class<?> entityClass, String packageName, String basePath) {
-        String entityName = entityClass.getSimpleName();
+        String entityName = toUpperFirst(tableName);
         String varName = toLowerFirst(entityName);
-        
-        // 接口
-        String interfaceContent = "package " + packageName + ".service;\n\n" +
-                "import " + packageName + ".dto." + entityName + "DTO;\n" +
-                "import org.springframework.data.domain.Page;\n" +
-                "import java.util.List;\n\n" +
-                "public interface " + entityName + "Service {\n" +
-                "    List<" + entityName + "DTO> findAll();\n" +
-                "    " + entityName + "DTO findById(Long id);\n" +
-                "    " + entityName + "DTO save(" + entityName + "DTO " + varName + "DTO);\n" +
-                "    void deleteById(Long id);\n" +
-                "    Page<"+entityName+"DTO> page(int page, int size);" +
-                "}\n";
-        
-        writeFile(basePath + "/service/" + entityName + "Service.java", interfaceContent);
-        
-        // 实现类
-        String implContent = "package " + packageName + ".service.impl;\n\n" +
-                "import " + packageName + ".dto." + entityName + "DTO;\n" +
-                "import " + packageName + ".entity." + entityName + ";\n" +
-                "import " + packageName + ".repository." + entityName + "Repository;\n" +
-                "import " + packageName + ".service." + entityName + "Service;\n" +
-                "import org.springframework.data.domain.Page;\n" +
-                "import org.springframework.data.domain.PageRequest;\n" +
-                "import org.springframework.data.domain.Pageable;\n" +
-                "import org.springframework.beans.factory.annotation.Autowired;\n" +
-                "import org.springframework.stereotype.Service;\n" +
-                "import java.util.List;\n" +
-                "import java.util.stream.Collectors;\n\n" +
-                "@Service\n" +
-                "public class " + entityName + "ServiceImpl implements " + entityName + "Service {\n\n" +
-                "    @Autowired\n" +
-                "    private " + entityName + "Repository " + varName + "Repository;\n\n" +
-                "" +
-                "   @Override" +
-                "   public Page<UserDTO> page(int page, int size) {\n" +
-                "        Pageable pageable = PageRequest.of(page, size);\n" +
-                "        return userRepository.findAll(pageable)\n" +
-                "                .map(this::convertToDTO);\n" +
-                "    }" +
-                "    @Override\n" +
-                "    public List<" + entityName + "DTO> findAll() {\n" +
-                "        return " + varName + "Repository.findAll().stream()\n" +
-                "                .map(this::convertToDTO)\n" +
-                "                .collect(Collectors.toList());\n" +
-                "    }\n\n" +
-                "    @Override\n" +
-                "    public " + entityName + "DTO findById(Long id) {\n" +
-                "        return " + varName + "Repository.findById(id)\n" +
-                "                .map(this::convertToDTO)\n" +
-                "                .orElse(null);\n" +
-                "    }\n\n" +
-                "    @Override\n" +
-                "    public " + entityName + "DTO save(" + entityName + "DTO " + varName + "DTO) {\n" +
-                "        " + entityName + " " + varName + " = convertToEntity(" + varName + "DTO);\n" +
-                "        " + entityName + " saved" + entityName + " = " + varName + "Repository.save(" + varName + ");\n" +
-                "        return convertToDTO(saved" + entityName + ");\n" +
-                "    }\n\n" +
-                "    @Override\n" +
-                "    public void deleteById(Long id) {\n" +
-                "        " + varName + "Repository.deleteById(id);\n" +
-                "    }\n\n" +
-                "    private " + entityName + "DTO convertToDTO(" + entityName + " " + varName + ") {\n" +
-                "        // 实现转换逻辑\n" +
-                "        return new " + entityName + "DTO();\n" +
-                "    }\n\n" +
-                "    private " + entityName + " convertToEntity(" + entityName + "DTO " + varName + "DTO) {\n" +
-                "        // 实现转换逻辑\n" +
-                "        return new " + entityName + "();\n" +
-                "    }\n" +
-                "}\n";
-        
-        writeFile(basePath + "/service/impl/" + entityName + "ServiceImpl.java", implContent);
-    }
+        dataModel.put("entityName", entityName);
+        dataModel.put("varName",  varName);
+        dataModel.put("packageName", packageName);
+        dataModel.put("ApiResponseUtil", utilPackageName);
 
-    private static void generateController(Class<?> entityClass, String packageName, String basePath) {
-        String entityName = entityClass.getSimpleName();
-        String varName = toLowerFirst(entityName);
-        
-        String content = "package " + packageName + ".controller;\n\n" +
-                "import " + packageName + ".dto." + entityName + "DTO;\n" +
-                "import " + packageName + ".service." + entityName + "Service;\n" +
-                "import org.springframework.beans.factory.annotation.Autowired;\n" +
-                "import com.example.demo.curd.dto.CommonResponse;\n" +
-                "import org.springframework.data.domain.Page;\n" +
+        dataModel.put("className", entityName);
+        dataModel.put("tableName", tableName);
+        dataModel.put("tableComment", "");
+        dataModel.put("superClass", "BaseEntity");
+        dataModel.put("columns", data);
+//        System.out.println(data.toString());
 
-                "import org.springframework.web.bind.annotation.*;\n" +
-                "import java.util.List;\n\n" +
-                "@RestController\n" +
-                "@RequestMapping(\"/api/" + toLowerFirst(entityName) + "s\")\n" +
-                "public class " + entityName + "Controller {\n\n" +
-                "    @Autowired\n" +
-                "    private " + entityName + "Service " + varName + "Service;\n\n" +
-                "    @GetMapping\n" +
-                "    public CommonResponse<List<" + entityName + "DTO>> findAll() {\n" +
-                "        return CommonResponse.success(" + varName + "Service.findAll());\n" +
-                "    }\n\n" +
-                "    @GetMapping(\"/page\")\n" +
-                "    public CommonResponse<Page<" + entityName + "DTO>> page(@RequestParam(defaultValue = \"0\") int page,\n" +
-                "                                                 @RequestParam(defaultValue = \"10\") int size) {\n" +
-                "        return CommonResponse.success(" + varName + "Service.page(page,size));\n" +
-                "    }\n\n" +
-                "    @GetMapping(\"/{id}\")\n" +
-                "    public CommonResponse<" + entityName + "DTO> findById(@PathVariable Long id) {\n" +
-                "        return CommonResponse.success(" + varName + "Service.findById(id));\n" +
-                "    }\n\n" +
-                "    @PostMapping\n" +
-                "    public CommonResponse<" + entityName + "DTO> save(@RequestBody " + entityName + "DTO " + varName + "DTO) {\n" +
-                "        return CommonResponse.success(" + varName + "Service.save(" + varName + "DTO));\n" +
-                "    }\n\n" +
-                "    @DeleteMapping(\"/{id}\")\n" +
-                "    public CommonResponse deleteById(@PathVariable Long id) {\n" +
-                "        " + varName + "Service.deleteById(id);\n" +
-                "       return CommonResponse.success(" + "id);\n" +
-                "    }\n" +
-                "}\n";
-        
-        writeFile(basePath + "/controller/" + entityName + "Controller.java", content);
-    }
+        generator.generateEntity(dataModel, basePath +File.separator +
+        "entity" + File.separator+ entityName  + ".java");
 
-    private static void generateDTO(Class<?> entityClass, String packageName, String basePath) {
-        String entityName = entityClass.getSimpleName();
-        StringBuilder fields = new StringBuilder();
-        
-        // 获取实体类的所有字段
-        for (Field field : entityClass.getDeclaredFields()) {
-            fields.append("    private ").append(field.getType().getSimpleName())
-                 .append(" ").append(field.getName()).append(";\n");
-        }
-        
-        String content = "package " + packageName + ".dto;\n\n" +
-                "import lombok.Data;\n\n" +
-                "@Data\n" +
-                "public class " + entityName + "DTO {\n" +
-                fields.toString() +
-                "}\n";
-        
-        writeFile(basePath + "/dto/" + entityName + "DTO.java", content);
-    }
+        generator.generateRepository(dataModel, basePath + File.separator
+        +"repository" + File.separator + entityName + "Repository.java");
 
-    private static void writeFile(String filePath, String content) {
-        try (FileWriter writer = new FileWriter(filePath)) {
-            writer.write(content);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        generator.generateService(dataModel, basePath + File.separator
+        + "service" + File.separator + entityName + "Service.java");
+
+        generator.generateServiceImpl(dataModel, basePath +File.separator
+                +"service"+ File.separator
+                +"impl"+ File.separator
+                + entityName  + "ServiceImpl.java");
+
+        generator.generateController(dataModel, basePath + File.separator
+        +"controller" + File.separator + entityName + "Controller.java");
+
+        generator.generateDto(dataModel, basePath + File.separator
+        +"dto" + File.separator + entityName + "DTO.java");
+
+
+
     }
 
     private static String toLowerFirst(String str) {
@@ -229,5 +206,11 @@ public class GenerateCodeUtil {
             return str;
         }
         return Character.toLowerCase(str.charAt(0)) + str.substring(1);
+    }
+    private static String toUpperFirst(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return Character.toUpperCase(str.charAt(0)) + str.substring(1);
     }
 }

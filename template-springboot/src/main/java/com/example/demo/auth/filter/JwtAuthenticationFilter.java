@@ -1,7 +1,9 @@
 package com.example.demo.auth.filter;
 
 import com.example.demo.auth.config.SsoConfig;
+import com.example.demo.auth.config.UserContextHolder;
 import com.example.demo.auth.exception.SsoException;
+import com.example.demo.utils.RedisUtil;
 import com.example.demo.utils.SsoUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -30,6 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private SsoConfig ssoProperties;
 
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if("options".equals(request.getMethod())){
@@ -44,9 +47,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             Claims claims = ssoUtil.validateAndParseToken(token);
+
             // 将用户信息存入请求属性
             request.setAttribute("userId", claims.getSubject());
             request.setAttribute("username", claims.get("username"));
+
+//            UserContextHolder.set();
+
             filterChain.doFilter(request, response);
         } catch (JwtException e) {
             response.sendError(HttpStatus.UNAUTHORIZED.value(), "无效或过期的令牌");

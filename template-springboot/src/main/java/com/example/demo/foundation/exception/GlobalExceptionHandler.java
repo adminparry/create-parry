@@ -1,5 +1,6 @@
 package com.example.demo.foundation.exception;
 
+import com.example.demo.auth.exception.SsoException;
 import com.example.demo.utils.ApiResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ApiResponseUtil<?> handleBusinessException(BusinessException e) {
         log.error("Business exception: {}", e.getMessage());
+        return ApiResponseUtil.error(e.getCode(), e.getMessage());
+    }
+    @ExceptionHandler(SsoException.class)
+    public ApiResponseUtil<?> handleSsoException(SsoException e) {
+        log.error("Sso exception: {}", e.getMessage());
         return ApiResponseUtil.error(e.getCode(), e.getMessage());
     }
 
@@ -65,6 +71,7 @@ public class GlobalExceptionHandler {
         log.error("Unexpected error", e);
         return ApiResponseUtil.error(500, "Internal server error");
     }
+
 
 
 } 

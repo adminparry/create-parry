@@ -27,7 +27,7 @@ public class SsoUtil {
     @PostConstruct
     public void init() {
         if (ssoConfig.getSECRET_KEY() == null || ssoConfig.getSECRET_KEY().length() < 12) {
-            throw new IllegalStateException("JWT密钥长度必须至少32位");
+            throw new IllegalStateException("JWT密钥长度必须至少12位");
         }
     }
 
