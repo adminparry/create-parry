@@ -197,8 +197,6 @@ public class GenerateCodeUtil {
         generator.generateDto(dataModel, basePath + File.separator
         +"dto" + File.separator + entityName + "DTO.java");
 
-
-
     }
 
     private static String toLowerFirst(String str) {
