@@ -1,6 +1,6 @@
 package com.example.demo.utils;
 
-import com.example.demo.auth.config.SsoConfig;
+import com.example.demo.foundation.config.SsoConfig;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;

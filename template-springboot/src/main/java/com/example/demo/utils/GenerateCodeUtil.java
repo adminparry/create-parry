@@ -1,14 +1,11 @@
 package com.example.demo.utils;
 
-import com.example.demo.auth.entity.User;
+import com.google.common.base.CaseFormat;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
-import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class GenerateCodeUtil {
     /**
@@ -31,6 +28,7 @@ public class GenerateCodeUtil {
                 return "String";
             case "INT":
             case "INTEGER":
+            case "TINYINT":
                 return "Integer";
             case "BIGINT":
                 return "Long";
@@ -57,13 +55,20 @@ public class GenerateCodeUtil {
     /**
      * 元数据
      */
-    private static final String username = "postgres";
+    private static final String username = "root";
     private static final String password = "123456";
-    private static final String jbdcUrl = "jdbc:postgresql://localhost:5432/public?useSSL=false&serverTimezone=UTC";
+    private static final String SCHEMA = "demo";
+    private static final String prefix = "/api/v1/white-list";
+
+    private static final String jbdcUrl = "jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=UTC";
     private static final String[] tables = {"users"};
+
     static final String packageRoot = "template-springboot.src.main.java.";
-    private static final String packageName = "com.example.demo.curd";
+    static final String mapperRoot = "template-springboot.src.main.resources.mapper";
+
+    private static final String packageName = "com.example.demo.crud";
     private static final String utilPackageName = "com.example.demo.utils";
+    private static final String model = "mybatis";
 
     public static void main(String[] args) throws IOException, SQLException {
 
@@ -101,14 +106,14 @@ public class GenerateCodeUtil {
             DatabaseMetaData metaData = conn.getMetaData();
 
             // 获取主键信息
-            ResultSet primaryKeys = metaData.getPrimaryKeys(null, null, tableName);
+            ResultSet primaryKeys = metaData.getPrimaryKeys(null, SCHEMA, tableName);
             List<String> pkColumns = new ArrayList<>();
             while (primaryKeys.next()) {
                 pkColumns.add(primaryKeys.getString("COLUMN_NAME"));
             }
 
             // 获取列信息
-            ResultSet rs = metaData.getColumns(null, null, tableName, null);
+            ResultSet rs = metaData.getColumns(SCHEMA, SCHEMA, tableName, "%");
             while (rs.next()) {
                 EntityTemplateData.ColumnData column = new EntityTemplateData.ColumnData();
                 String columnName = rs.getString("COLUMN_NAME");
@@ -129,24 +134,11 @@ public class GenerateCodeUtil {
     }
 
     private static String underscoreToCamel(String columnName) {
-        return columnName.replaceAll("_([a-z])", "$1".toUpperCase());
+        return  CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, columnName);
     }
 
-    public String readTemplateFromModule(String templatePath) {
-        try (InputStream inputStream = getClass().getModule().getResourceAsStream(templatePath);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
-            return reader.lines().collect(Collectors.joining("\n"));
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read template file: " + templatePath, e);
-        }
-    }
-    /**
-     * 根据表名生成实体类
-     */
-    public static void generateCURDFromDataSource(){
 
-    }
 
 
     public static void generateCRUD(List<EntityTemplateData.ColumnData> data,String tableName, String basePath) throws IOException {
@@ -155,16 +147,20 @@ public class GenerateCodeUtil {
         // 创建目录结构
         new File(basePath + "/controller").mkdirs();
         new File(basePath + "/service").mkdirs();
-        new File(basePath + "/repository").mkdirs();
+        new File(basePath + "/service/impl").mkdirs();
+
         new File(basePath + "/dto").mkdirs();
-        new File(basePath + "/entity").mkdirs();
+
+
+        new File(basePath + "/vo").mkdirs();
 
         EntityGenerator generator = new EntityGenerator();
 
         Map<String, Object> dataModel = new HashMap<>();
 
-        String entityName = toUpperFirst(tableName);
+        String entityName = toUpperFirst(underscoreToCamel(tableName));
         String varName = toLowerFirst(entityName);
+
         dataModel.put("entityName", entityName);
         dataModel.put("varName",  varName);
         dataModel.put("packageName", packageName);
@@ -173,15 +169,37 @@ public class GenerateCodeUtil {
         dataModel.put("className", entityName);
         dataModel.put("tableName", tableName);
         dataModel.put("tableComment", "");
-        dataModel.put("superClass", "BaseEntity");
+        dataModel.put("superClass", "BaseEntityUtil");
         dataModel.put("columns", data);
+        dataModel.put("prefix", prefix);
+        dataModel.put("model", model);
+
 //        System.out.println(data.toString());
+        switch (model) {
+            case "jpa":
+                new File(basePath + "/jpa").mkdirs();
+                new File(basePath + "/repository").mkdirs();
+                
+                generator.generateEntity(dataModel, basePath +File.separator +
+                        "jpa" + File.separator+ entityName  + ".java");
 
-        generator.generateEntity(dataModel, basePath +File.separator +
-        "entity" + File.separator+ entityName  + ".java");
+                generator.generateRepository(dataModel, basePath + File.separator
+                        +"repository" + File.separator + entityName + "Repository.java");
+                break;
+            default:
+                new File(basePath + "/entity").mkdirs();
+                new File(basePath + "/mapper").mkdirs();
 
-        generator.generateRepository(dataModel, basePath + File.separator
-        +"repository" + File.separator + entityName + "Repository.java");
+                generator.generateEntity(dataModel, basePath +File.separator +
+                "entity" + File.separator+ entityName  + ".java");
+                generator.generateMapper(dataModel, basePath + File.separator
+                        +"mapper" + File.separator + entityName + "Mapper.java");
+                generator.generateMapperXML(dataModel, getJavaSourcePath(mapperRoot)
+                        + File.separator + entityName + "Mapper.xml");
+
+        }
+
+
 
         generator.generateService(dataModel, basePath + File.separator
         + "service" + File.separator + entityName + "Service.java");
@@ -195,7 +213,9 @@ public class GenerateCodeUtil {
         +"controller" + File.separator + entityName + "Controller.java");
 
         generator.generateDto(dataModel, basePath + File.separator
-        +"dto" + File.separator + entityName + "DTO.java");
+                +"dto" + File.separator + entityName + "DTO.java");
+        generator.generateVo(dataModel, basePath + File.separator
+                +"vo" + File.separator + entityName + "VO.java");
 
     }
 

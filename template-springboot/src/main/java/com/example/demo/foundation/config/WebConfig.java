@@ -1,6 +1,6 @@
 package com.example.demo.foundation.config;
 
-import com.example.demo.foundation.interceptor.IndexInterceptor;
+import com.example.demo.utils.InterceptorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
-    private IndexInterceptor indexInterceptor;
+    private InterceptorUtil interceptorUtil;
 
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
@@ -23,8 +23,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(indexInterceptor).order(1).addPathPatterns("/**");
-//        registry.addInterceptor(indexInterceptor).order(2).addPathPatterns("/**");
+        registry.addInterceptor(interceptorUtil).order(1).addPathPatterns("/**");
+//        registry.addInterceptor(interceptorUtil).order(2).addPathPatterns("/**");
 
     }
 }

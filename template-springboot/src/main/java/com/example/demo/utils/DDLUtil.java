@@ -1,9 +1,5 @@
 package com.example.demo.utils;
 
-import org.apache.ddlutils.Platform;
-import org.apache.ddlutils.PlatformFactory;
-import org.apache.ddlutils.model.Database;
-import org.apache.ddlutils.model.Table;
 import org.quartz.utils.DBConnectionManager;
 
 import javax.sql.DataSource;

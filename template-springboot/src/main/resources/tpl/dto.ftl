@@ -11,6 +11,7 @@ public class ${entityName}DTO {
 <#list columns as column>
     private ${column.javaType} ${column.fieldName};
 </#list>
+
     public ${entityName}DTO(${entityName} entity) {
         <#list columns as column>
         this.${column.fieldName} = entity.get${column.fieldDtoName}();

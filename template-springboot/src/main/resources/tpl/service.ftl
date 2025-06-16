@@ -1,8 +1,10 @@
 package ${packageName}.service;
 
-import org.springframework.data.domain.Page;
+import com.example.demo.utils.PaginationUtil;
 import java.util.List;
 import ${packageName}.dto.${entityName}DTO;
+import ${packageName}.vo.${entityName}VO;
+
 
 public interface ${entityName}Service {
 
@@ -10,9 +12,11 @@ public interface ${entityName}Service {
 
     ${entityName}DTO  findById(Long id);
 
-    ${entityName}DTO save(${entityName}DTO ${varName}DTO);
+    Long save(${entityName}VO ${varName}VO);
 
-    void deleteById(Long id);
+    Long deleteById(Long id);
 
-    Page<${entityName}DTO> page(int page, int size);
+    Long updateById(Long id, ${entityName}VO ${varName}VO);
+
+    PaginationUtil<${entityName}DTO> page(Long page, Long size);
 }

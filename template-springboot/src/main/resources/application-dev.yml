@@ -13,41 +13,28 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
   datasource:
-    primary:
-      url: jdbc:postgresql://192.168.2.2:5432/public?useSSL=false&serverTimezone=UTC
-      username: postgres
-      password: 123456
-      driver-class-name: org.postgresql.Driver
-      hikari:
-        max-lifetime: 1800000  # 连接最大寿命 30min
-        connection-timeout: 1800000  # 连接超时时间 30min
-        minimum-idle: 100   # 最小空闲连接数
-        maximum-pool-size: 200  # 最大连接池大小
-        connection-test-query: "select 1"
-        idle-timeout: 600000 # 空闲连接超时时长 10min
-    secondary:
-      url: jdbc:mysql://192.168.2.2:3306/public?useSSL=false&serverTimezone=UTC
-      username: root
-      password: 123456
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      hikari:
-        max-lifetime: 1800000  # 连接最大寿命 30min
-        connection-timeout: 1800000  # 连接超时时间 30min
-        minimum-idle: 100   # 最小空闲连接数
-        maximum-pool-size: 200  # 最大连接池大小
-        connection-test-query: "select 1"
-        idle-timeout: 600000 # 空闲连接超时时长 10min
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        temp:
-          use_jdbc_metadata_defaults: false
-        format-sql: true
+    url: jdbc:mysql://192.168.2.2:3306/demo?useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      max-lifetime: 1800000  # 连接最大寿命 30min
+      connection-timeout: 1800000  # 连接超时时间 30min
+      minimum-idle: 100   # 最小空闲连接数
+      maximum-pool-size: 200  # 最大连接池大小
+      connection-test-query: "select 1"
+      idle-timeout: 600000 # 空闲连接超时时长 10min
+#  jpa:
+#    database-platform: org.hibernate.dialect.MySQLDialect
+#    hibernate:
+#      ddl-auto: none
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQLDialect
+#        temp:
+#          use_jdbc_metadata_defaults: false
+#        format-sql: true
   redis:
     host: 192.168.2.2
     port: 6379
@@ -58,6 +45,7 @@ sso:
   JWT_EXPIRATION: 86400000
   REDIS_PREFIX: "sso:token:"
   white-list:
+    - /favicon.ico
     - /api/v1/auth/*
     - /api/v1/white-list/**
 

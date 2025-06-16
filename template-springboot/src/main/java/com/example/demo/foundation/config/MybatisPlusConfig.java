@@ -1,13 +1,19 @@
 package com.example.demo.foundation.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import org.apache.ibatis.reflection.MetaObject;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+
+
 @Component
 public class MybatisPlusConfig implements MetaObjectHandler {
+
 
     @Override
     public void insertFill(MetaObject metaObject) {

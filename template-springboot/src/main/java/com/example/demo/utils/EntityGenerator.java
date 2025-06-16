@@ -22,7 +22,7 @@ public class EntityGenerator {
     }
 
 
-    private void  generate(String outputPath, Map dataModel, String tpl) throws IOException {
+    private void generate(String outputPath, Map dataModel, String tpl) throws IOException {
 
         Template template = configuration.getTemplate(tpl);
 
@@ -33,33 +33,63 @@ public class EntityGenerator {
             throw new RuntimeException(e);
         }
     }
-    public void  generateServiceImpl(Map map, String p) throws IOException {
 
-        generate(p, map, "impl.ftl");
+    public void generateServiceImpl(Map map, String p) throws IOException {
+        String model = map.get("model").toString();
+
+        switch (model) {
+            case "jpa":
+                generate(p, map, "impl.jpa.ftl");
+                break;
+            default:
+                generate(p, map, "impl.mybatis.ftl");
+
+        }
     }
-    public void  generateService(Map map, String p) throws IOException {
+
+    public void generateService(Map map, String p) throws IOException {
 
         generate(p, map, "service.ftl");
     }
 
-    public void  generateRepository(Map map, String p) throws IOException {
+    public void generateRepository(Map map, String p) throws IOException {
 
         generate(p, map, "repository.ftl");
     }
-    public void  generateMapper(Map map, String p) throws IOException {
+
+    public void generateMapper(Map map, String p) throws IOException {
 
         generate(p, map, "mapper.ftl");
     }
-    public void  generateDto(Map map, String p) throws IOException {
+    public void generateMapperXML(Map map, String p) throws IOException {
+
+        generate(p, map, "mapper.xml.ftl");
+    }
+
+    public void generateDto(Map map, String p) throws IOException {
 
         generate(p, map, "dto.ftl");
     }
-    public void  generateController(Map map, String p) throws IOException {
+
+    public void generateController(Map map, String p) throws IOException {
 
         generate(p, map, "controller.ftl");
     }
-    public  void generateEntity(Map map, String p) throws IOException {
-        generate(p, map, "entity.mybatis.ftl");
+
+    public void generateEntity(Map map, String p) throws IOException {
+        String model = map.get("model").toString();
+
+        switch (model) {
+            case "jpa":
+                generate(p, map, "entity.jpa.ftl");
+                break;
+            default:
+                generate(p, map, "entity.mybatis.ftl");
+
+        }
     }
 
+    public void generateVo(Map map, String p) throws IOException {
+        generate(p, map, "vo.ftl");
+    }
 }

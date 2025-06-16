@@ -1,8 +1,10 @@
-package ${packageName};
+package ${packageName}.entity;
 
-<#list importList as import>
-import ${import};
-</#list>
+import javax.persistence.*;
+import lombok.Data;
+import java.time.LocalDateTime;
+import com.example.demo.utils.BaseEntityUtil;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * ${tableComment!""}
@@ -19,7 +21,8 @@ import ${import};
     <#if column.isPrimaryKey()>
     @Id
     <#if column.isAutoIncrement()>
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "snowflake")
+    @GenericGenerator(name = "snowflake", strategy = "com.example.demo.utils.SnowflakeUtil")
     </#if>
     </#if>
     @Column(name = "${column.columnName}"<#if column.columnType??>, columnDefinition = "${column.columnType}"</#if>)
