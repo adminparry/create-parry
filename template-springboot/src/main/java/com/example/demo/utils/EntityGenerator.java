@@ -6,8 +6,6 @@ import freemarker.template.TemplateException;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class EntityGenerator {
@@ -30,6 +28,7 @@ public class EntityGenerator {
         try (Writer out = new OutputStreamWriter(new FileOutputStream(outputFile), StandardCharsets.UTF_8)) {
             template.process(dataModel, out);
         } catch (TemplateException e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
     }

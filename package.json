@@ -1,6 +1,6 @@
 {
   "name": "create-parry",
-  "version": "25.5.3019",
+  "version": "25.6.16",
   "type": "module",
   "bin":{
     "create-parry": "index.js",

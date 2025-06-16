@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class IndexPoint {
 
 
-    @Around("@annotation(com.example.demo.foundation.annotation.Index)")
+    @Around("@annotation(com.example.demo.foundation.annotation.Permission)")
     public Object anyName(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         String methodName = signature.getMethod().getName();

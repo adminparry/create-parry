@@ -9,6 +9,44 @@ import java.util.*;
 
 public class GenerateCodeUtil {
     /**
+     * 元数据
+     */
+    private static final String username = "root";
+    private static final String password = "123456";
+    private static final String SCHEMA = "demo";
+    private static final String prefix = "/api/v1/white-list";
+
+    private static final String jbdcUrl = "jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=UTC";
+    private static final String[] tables = {"users"};
+
+    static final String packageRoot = "template-springboot.src.main.java.";
+    static final String mapperRoot = "template-springboot.src.main.resources.mapper";
+
+    private static final String packageName = "com.example.demo.crud";
+    private static final String utilPackageName = "com.example.demo.utils";
+    private static final String model = "mybatis";
+
+    public static void main(String[] args) {
+
+        Arrays.stream(tables).forEach(item -> {
+
+            try {
+                List<EntityTemplateData.ColumnData>  ret = getTableColumns(item);
+
+                // 生成CRUD代码
+                GenerateCodeUtil.generateCRUD(
+                        ret,
+                        item,
+                        getJavaSourcePath(packageRoot + packageName)
+                );
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+    /**
      *  数据库表名转实体类名称
      */
     private static String tableNameToEntityName(String input){
@@ -52,44 +90,6 @@ public class GenerateCodeUtil {
      * 从resources中获取模版文件
      * @return
      */
-    /**
-     * 元数据
-     */
-    private static final String username = "root";
-    private static final String password = "123456";
-    private static final String SCHEMA = "demo";
-    private static final String prefix = "/api/v1/white-list";
-
-    private static final String jbdcUrl = "jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=UTC";
-    private static final String[] tables = {"users"};
-
-    static final String packageRoot = "template-springboot.src.main.java.";
-    static final String mapperRoot = "template-springboot.src.main.resources.mapper";
-
-    private static final String packageName = "com.example.demo.crud";
-    private static final String utilPackageName = "com.example.demo.utils";
-    private static final String model = "mybatis";
-
-    public static void main(String[] args) throws IOException, SQLException {
-
-        Arrays.stream(tables).forEach(item -> {
-
-            try {
-                List<EntityTemplateData.ColumnData>  ret = getTableColumns(item);
-
-                // 生成CRUD代码
-                GenerateCodeUtil.generateCRUD(
-                        ret,
-                        item,
-                        getJavaSourcePath(packageRoot + packageName)
-                );
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
     public static String getJavaSourcePath(String pkName){
         String projectRoot = System.getProperty("user.dir");
         String javaSourcePath = projectRoot + File.separator ;

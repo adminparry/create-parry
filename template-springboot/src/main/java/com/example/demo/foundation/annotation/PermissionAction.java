@@ -1,6 +1,8 @@
 package com.example.demo.foundation.annotation;
 
 
+import com.example.demo.foundation.enums.PermissionsTypes;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -8,6 +10,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Index {
-    String[] value();
+public @interface PermissionAction {
+    PermissionsTypes value();
 }
