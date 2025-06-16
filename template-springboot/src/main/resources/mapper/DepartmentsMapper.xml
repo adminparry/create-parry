@@ -1,0 +1,41 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.crud.mapper.DepartmentsMapper">
+
+        <sql id="Raw_Departments_List">
+            dept_id,
+            dept_name,
+            parent_id,
+            order_num,
+            status,
+            created_at,
+            updated_at,
+        </sql>
+
+        <resultMap id = "DepartmentsResultMap" type = "com.example.demo.crud.entity.Departments">
+            <result column = "dept_id" property = "deptId"/>
+            <result column = "dept_name" property = "deptName"/>
+            <result column = "parent_id" property = "parentId"/>
+            <result column = "order_num" property = "orderNum"/>
+            <result column = "status" property = "status"/>
+            <result column = "created_at" property = "createdAt"/>
+            <result column = "updated_at" property = "updatedAt"/>
+<!--    一对一 一对多 -->
+    <!--    <association property="tClass" javaType="com.example.aaa.test.entity.TClass">-->
+    <!--        <id column="cid" property="id"></id>-->
+    <!--        <result column="cname" property="name" />-->
+    <!--        <result column="code" property="code" />-->
+    <!--    </association>-->
+
+    <!--    <collection property="studentList"-->
+    <!--                column="{sid=id}"-->
+    <!--                select="getStudentByCid"-->
+    <!--                ofType="com.example.aaa.test.entity.TStudent">-->
+    <!--        <id column="id" property="id" />-->
+    <!--        <result column="name" property="name" />-->
+    <!--        <result column="card" property="card" />-->
+    <!--        <result column="classid" property="classid" />-->
+    <!--    </collection>-->
+        </resultMap>
+
+
+</mapper>

@@ -108,6 +108,11 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>${jwt.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.10.2</version>  <!-- 使用最新版本 -->
+		</dependency>
 <!--		oss-->
 		<dependency>
 			<groupId>com.aliyun.oss</groupId>

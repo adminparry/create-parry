@@ -25,6 +25,10 @@ public class EntityGenerator {
         Template template = configuration.getTemplate(tpl);
 
         File outputFile = new File(outputPath);
+        Boolean isAuto = "force".equals(dataModel.get("auto"));
+        if(outputFile.exists() || isAuto){
+            return;
+        }
         try (Writer out = new OutputStreamWriter(new FileOutputStream(outputFile), StandardCharsets.UTF_8)) {
             template.process(dataModel, out);
         } catch (TemplateException e) {

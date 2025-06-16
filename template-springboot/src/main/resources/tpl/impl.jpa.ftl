@@ -1,5 +1,6 @@
 package ${packageName}.service.impl;
 import ${packageName}.dto.${entityName}DTO;
+import ${packageName}.vo.${entityName}VO;
 import ${packageName}.entity.${entityName};
 import ${packageName}.repository.${entityName}Repository;
 import ${packageName}.service.${entityName}Service;
@@ -24,36 +25,38 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
    public Page<${entityName}DTO> page(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ${varName}Repository.findAll(pageable)
-                .map(this::convertToDTO);
+                .map(${entityName}DTO::new);
     }
     @Override
     public List<${entityName}DTO> findAll() {
         return ${varName}Repository.findAll().stream()
-                .map(this::convertToDTO)
+                .map(${entityName}DTO::new)
                 .collect(Collectors.toList());
     }
     @Override
     public ${entityName}DTO findById(Long id) {
         return ${varName}Repository.findById(id)
-                .map(this::convertToDTO)
+                .map(${entityName}DTO::new)
                 .orElse(null);
     }
     @Override
-    public ${entityName}DTO save(${entityName}DTO ${varName}DTO) {
-        ${entityName} ${varName} = convertToEntity(${varName}DTO);
+    public Long save(${entityName}VO ${varName}VO) {
+        ${entityName} ${varName} = new ${entityName}();
+        BeanUtils.copyProperties(${varName}VO, ${varName});
         ${entityName} saved${entityName} = ${varName}Repository.save(${varName});
-        return convertToDTO(saved${entityName});
+        return Long.valueOf(saved${entityName}.getId());
+    }
+     @Override
+    public Long updateById(Long id, ${entityName}VO ${varName}VO) {
+        ${entityName} ${varName} = new ${entityName}();
+        BeanUtils.copyProperties(${varName}VO, ${varName});
+        ${entityName} saved${entityName} = ${varName}Repository.save(${varName});
+        return id;
     }
     @Override
-    public void deleteById(Long id) {
+    public Long deleteById(Long id) {
         ${varName}Repository.deleteById(id);
+        return id;
     }
-    private ${entityName}DTO convertToDTO(${entityName} ${varName}) {
-        // 实现转换逻辑
-        return new ${entityName}DTO();
-    }
-    private ${entityName} convertToEntity(${entityName}DTO ${varName}DTO) {
-        // 实现转换逻辑
-        return new ${entityName}();
-    }
+   
 };

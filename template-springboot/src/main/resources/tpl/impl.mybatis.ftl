@@ -30,7 +30,7 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
         QueryWrapper queryWrapper = new QueryWrapper();
         IPage<${entityName}> pagination = ${varName}Mapper.selectPage(page, queryWrapper);
         List<${entityName}DTO> record = pagination.getRecords()
-        .stream().map(this::convertToDTO)
+        .stream().map(${entityName}DTO::new)
         .collect(Collectors.toList());
 
         return PaginationUtil.of(record, pagination.getCurrent(),pagination.getSize(),pagination.getTotal());
@@ -39,14 +39,14 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
     @Override
     public List<${entityName}DTO> findAll() {
         return ${varName}Mapper.selectList(null).stream()
-                .map(this::convertToDTO)
+                .map(${entityName}DTO::new)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ${entityName}DTO findById(Long id) {
         return Optional.of(${varName}Mapper.selectById(id))
-                .map(this::convertToDTO)
+                .map(${entityName}DTO::new)
                 .orElse(null);
     }
 
@@ -70,12 +70,5 @@ public class ${entityName}ServiceImpl implements ${entityName}Service {
         return id;
     }
 
-    private ${entityName}DTO convertToDTO(${entityName} ${varName}) {
-        // 实现转换逻辑
-        return new ${entityName}DTO();
-    }
-    private ${entityName} convertToEntity(${entityName}DTO ${varName}DTO) {
-        // 实现转换逻辑
-        return new ${entityName}();
-    }
+    
 };

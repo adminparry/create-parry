@@ -17,14 +17,16 @@ public class GenerateCodeUtil {
     private static final String prefix = "/api/v1/white-list";
 
     private static final String jbdcUrl = "jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=UTC";
-    private static final String[] tables = {"users"};
+    private static final String[] tables = {"users", "user_roles", "user_departments", "roles", "role_permissions", "permissions", "departments"};
 
-    static final String packageRoot = "template-springboot.src.main.java.";
-    static final String mapperRoot = "template-springboot.src.main.resources.mapper";
+    static final String packageRoot = "src.main.java.";
+    static final String mapperRoot = "src.main.resources.mapper";
 
     private static final String packageName = "com.example.demo.crud";
     private static final String utilPackageName = "com.example.demo.utils";
     private static final String model = "mybatis";
+//    如果存在就不覆盖 none 强制覆盖 force
+    private static final String force = "none";
 
     public static void main(String[] args) {
 
@@ -58,7 +60,7 @@ public class GenerateCodeUtil {
      * @return
      */
     private static String mapToJavaType(String dbType) {
-//        System.out.println(dbType);
+
         switch (dbType.toUpperCase()) {
             case "VARCHAR":
             case "CHAR":
@@ -92,6 +94,7 @@ public class GenerateCodeUtil {
      */
     public static String getJavaSourcePath(String pkName){
         String projectRoot = System.getProperty("user.dir");
+
         String javaSourcePath = projectRoot + File.separator ;
         return  javaSourcePath + pkName.replaceAll("\\.", File.separator);
     }
@@ -173,8 +176,9 @@ public class GenerateCodeUtil {
         dataModel.put("columns", data);
         dataModel.put("prefix", prefix);
         dataModel.put("model", model);
+        dataModel.put("force", force);
 
-//        System.out.println(data.toString());
+
         switch (model) {
             case "jpa":
                 new File(basePath + "/jpa").mkdirs();
@@ -217,6 +221,7 @@ public class GenerateCodeUtil {
         generator.generateVo(dataModel, basePath + File.separator
                 +"vo" + File.separator + entityName + "VO.java");
 
+        System.out.println(TraceUtil.all());
     }
 
     private static String toLowerFirst(String str) {
